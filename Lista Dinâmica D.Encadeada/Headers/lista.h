@@ -24,3 +24,11 @@ int insere_inicio(Lista* li, Aluno al);
 int insere_final(Lista* li, Aluno al);
 
 int insere_ord(Lista* li, Aluno al);
+
+int remove_inicio(Lista* li);
+
+int remove_final(Lista* li);
+
+int remove_ord (Lista* li, int mat);
+
+void echo(Lista* li);

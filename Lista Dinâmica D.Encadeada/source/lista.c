@@ -1,5 +1,6 @@
 #include "lista.h"
-#include "stdlib.h"
+#include <stdlib.h>
+#include <stdio.h>
 struct elemento{
 	struct elemento *prox;
 	Aluno dados;
@@ -97,9 +98,11 @@ int insere_final(Lista* li, Aluno al)
 	
 	no->dados = al;
 	no->prox = NULL;
+	no->ant = NULL;
 	*li = no;
 	} 
 	else{
+		no->dados = al;
 		Elem *aux = *li;	
 		while( aux ->prox != NULL)
 			aux = aux->prox;
@@ -117,9 +120,10 @@ int insere_ord(Lista* li, Aluno al)
 		return 0;
 	Elem* no = (Elem*) malloc (sizeof(Elem));
 	if(no == NULL)
+		return 0;
 	no-> dados = al;
 	
-	if (vazia_lista(li))
+		if (vazia_lista(li))
 	{
 		no->prox = NULL;
 		no->ant = NULL;
@@ -153,4 +157,80 @@ int insere_ord(Lista* li, Aluno al)
 		}
 		return 1;
 	}
+}
+
+int remove_inicio(Lista* li)
+{
+	if (li == NULL || *li == NULL)
+		return 0;
+	Elem *no = *li;
+	*li = no->prox;
+
+	if(no->prox != NULL)
+		no->prox->ant = NULL;
+
+	free (no);
+	return 1;	
+}
+
+int remove_final(Lista* li)
+{
+	if (li == NULL || *li == NULL)
+		return 0;
+	Elem *no = *li;
+
+	while(no->prox != NULL)
+	{
+		no = no->prox;
+	}
+	if (no->ant == NULL)
+	{
+		*li = no->prox;
+	}
+	else
+	{
+		no->ant->prox = NULL;
+	}
+
+	free (no);
+	return 1;
+}
+
+int remove_ord (Lista* li, int mat)
+{
+	if (li == NULL || *li == NULL)
+		return 0;
+	Elem *no = *li;
+
+	
+	while (no != NULL && no->dados.matricula != mat)
+	{
+		no = no->prox;
+	}
+	if (no == NULL)
+		return 0;
+	if(no->ant == NULL)
+			*li = no->prox;
+	
+	else 
+		no->ant->prox = no->prox;
+
+
+	if (no->prox != NULL)
+		no->prox->ant = no->ant;
+
+	free (no);
+	return 1;
+}
+
+void echo(Lista* li)
+{
+	Elem *aux = *li;
+
+	while (aux != NULL)
+	{
+		printf("%d ", aux->dados.matricula);
+		aux = aux->prox;
+	}
+	printf("\n");
 }
